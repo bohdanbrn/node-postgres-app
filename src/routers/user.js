@@ -16,6 +16,20 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post('/users', auth, async (req, res) => {
+    try {
+        const user = await User.create(req.body);
+
+        if (!user) {
+            res.status(500).send();
+        }
+
+        res.status(201).send({ user })
+    } catch(e) {
+        res.status(400).send(e)
+    }
+})
+
 router.get('/users/:id', auth, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);

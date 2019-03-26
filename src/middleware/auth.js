@@ -8,7 +8,12 @@ const auth = async (req, res, next) => {
         const privateKey = fs.readFileSync('src/config/private.key', {encoding: 'utf-8'});
         const token = req.header('x-auth');
         const decoded = jwt.verify(token, privateKey);
-        const user = await User.findOne({ where: {id: decoded.id, token }});
+        const user = await User.findOne({
+            where: {
+                id: decoded.id,
+                token
+            }
+        });
 
         if (!user) {
             throw new Error();
@@ -22,6 +27,5 @@ const auth = async (req, res, next) => {
         res.status(401).send({ error: 'Please authenticate.' })
     }
 }
-
 
 module.exports = auth;

@@ -31,20 +31,20 @@ module.exports = (sequelize, DataTypes) => {
                 password: pass
             }
         });
-        
+
         return user;
     }
 
     User.findById = async (id) => {
         const user = await User.findOne({
-            where: {id}
+            where: { id }
         });
-        
+
         return user;
     }
 
     // Instance level methods
-    User.prototype.generateAuthToken = async function() {
+    User.prototype.generateAuthToken = async function () {
         const user = this;
         // TODO (edit privateKey)
         const privateKey = fs.readFileSync('src/config/private.key', {encoding: 'utf-8'});
@@ -54,6 +54,6 @@ module.exports = (sequelize, DataTypes) => {
     
         return token;
     }
-    
+
     return User;
 }
