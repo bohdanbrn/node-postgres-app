@@ -1,6 +1,7 @@
 const express = require('express');
 const router = new express.Router();
 const {User} = require('../db/sequelize.js');
+const auth = require('../middleware/auth.js')
 
 router.post('/login', async (req, res) => {
     try {
@@ -9,13 +10,13 @@ router.post('/login', async (req, res) => {
         const user = await User.findByCredentials(email, pass);
         const token = await user.generateAuthToken();
 
-        res.send({ user, token });
+        res.header('x-auth', token).send({ user });
     } catch(e) {
         res.status(400).send(e);
     }
 });
 
-router.get('/users/:id', async (req, res) => {
+router.get('/users/:id', auth, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         
