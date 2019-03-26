@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    // class level method
+    // Class level methods
     User.findByCredentials = async (email, pass) => {
         const user = await User.findOne({
             where: {
@@ -35,9 +35,18 @@ module.exports = (sequelize, DataTypes) => {
         return user;
     }
 
-    // instance level method
+    User.findById = async (id) => {
+        const user = await User.findOne({
+            where: {id}
+        });
+        
+        return user;
+    }
+
+    // Instance level methods
     User.prototype.generateAuthToken = async function() {
         const user = this;
+        // TODO (edit privateKey)
         const privateKey = fs.readFileSync('src/config/private.key', {encoding: 'utf-8'});
         const token = jwt.sign({ id: user.id }, privateKey);
     
