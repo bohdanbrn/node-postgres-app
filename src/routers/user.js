@@ -16,7 +16,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/users', auth, async (req, res) => {
+router.post('/users', async (req, res) => {
     try {
         const user = await User.create(req.body);
 
@@ -28,7 +28,7 @@ router.post('/users', auth, async (req, res) => {
     } catch(e) {
         res.status(400).send(e)
     }
-})
+});
 
 router.get('/users/:id', auth, async (req, res) => {
     try {
@@ -38,7 +38,7 @@ router.get('/users/:id', auth, async (req, res) => {
             res.status(500).send();
         }
 
-        res.send(user);
+        res.send({ user });
     } catch (e) {
         res.status(404).send(e);
     }
