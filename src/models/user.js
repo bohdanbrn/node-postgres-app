@@ -84,14 +84,15 @@ module.exports = (sequelize, DataTypes) => {
     User.prototype.generateAuthToken = async function () {
         const user = this;
         // TODO (edit privateKey)
-        const privateKey = fs.readFileSync('src/config/private.key', {encoding: 'utf-8'});
+        const privateKey = fs.readFileSync('src/config/private.key', { encoding: 'utf-8' });
         const token = jwt.sign({ id: user.id }, privateKey);
     
-        user.update({token});
+        user.update({ token });
     
         return token;
     }
 
+    // hash password after create user
     User.beforeCreate((user) => {
         if (!user.password) {
             throw new Error("Password not defined!");
@@ -100,14 +101,14 @@ module.exports = (sequelize, DataTypes) => {
         user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
     });
     
-    // TODO (maybe delete)
-    // User.beforeUpdate((user) => {
-    //     if (!user.password) {
-    //         throw new Error("Password not defined!");
-    //     }
+    // hash password after update user
+    User.beforeUpdate((user) => {
+        if (!user.password) {
+            throw new Error("Password not defined!");
+        }
 
-    //     user.password = bcrypt.hashSync(user.previous.password, bcrypt.genSaltSync(10), null);
-    // });
+        user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+    });
 
     return User;
 }

@@ -30,12 +30,43 @@ router.post('/users', async (req, res) => {
     }
 });
 
+router.put('/users/:id', auth, async (req, res) => {
+    try {
+        const requestId = req.params.id;
+        const updates = Object.keys(req.body);
+        const allowedUpdates = ['first_name', 'last_name', 'email', 'phone', 'password'];
+        const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+        
+        if (!isValidOperation) {
+            return res.status(400).send({ error: 'Invalid updates!' });
+        }
+
+        try {
+            const user = await User.findById(requestId);
+
+            if (!user) {
+                return res.status(404).send({ error: 'User not found!' });
+            }
+            
+            updates.forEach((update) => user[update] = req.body[update]);
+            await user.save();
+
+            res.send(user);
+        } catch (e) {
+            res.status(400).send(e);
+        }
+    } catch (e) {
+        res.status(404).send(e);
+    }
+});
+
 router.get('/users/:id', auth, async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const requestId = req.params.id;
+        const user = await User.findById(requestId);
         
         if (!user) {
-            res.status(500).send();
+            return res.status(404).send({ error: 'User not found!' });
         }
 
         res.send({ user });
