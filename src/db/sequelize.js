@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
-const userModel = require('../models/user');
+const userModel = require('../models/user.js');
+
 const sequelize = new Sequelize('test', 'postgres', '1111', {
     host: 'localhost',
     port: 5432,

@@ -35,22 +35,14 @@ router.post('/users', async (req, res) => {
 router.put('/users/:id', auth, async (req, res) => {
     try {
         const requestId = req.params.id;
-        const updates = Object.keys(req.body);
-        const allowedUpdates = ['first_name', 'last_name', 'email', 'phone', 'password'];
-        const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-        
-        if (!isValidOperation) {
-            return res.status(400).send({ error: 'Invalid updates!' });
-        }
-
         const user = await User.findById(requestId);
 
         if (!user) {
             return res.status(404).send({ error: 'User not found!' });
         }
-        
-        updates.forEach((update) => user[update] = req.body[update]);
-        await user.save();
+
+        // update user data
+        await user.update(req.body);
 
         // send a message to room "updates" after update user
         io.sockets.in('updates').emit('message', {
