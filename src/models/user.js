@@ -83,8 +83,7 @@ module.exports = (sequelize, DataTypes) => {
     // Instance level methods
     User.prototype.generateAuthToken = async function () {
         const user = this;
-        // TODO (edit privateKey)
-        const privateKey = fs.readFileSync('src/config/private.key', { encoding: 'utf-8' });
+        const privateKey = process.env.JWT_SECRET;
         const token = jwt.sign({ id: user.id }, privateKey);
     
         user.update({ token });

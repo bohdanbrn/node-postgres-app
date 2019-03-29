@@ -1,15 +1,14 @@
 const Sequelize = require('sequelize');
 const userModel = require('../models/user.js');
 
-const sequelize = new Sequelize('test', 'postgres', '1111', {
-    host: 'localhost',
-    port: 5432,
-    dialect: 'postgres',
-    pool: {
-        max: 10,
-        min: 0,
-        idle: 10000
-    }
+const dbName = process.env.DB_NAME;
+const dbUsername = process.env.DB_USERNAME;
+const dbPassword = process.env.DB_PASSWORD;
+
+const sequelize = new Sequelize(dbName, dbUsername, dbPassword, {
+    host: process.env.DB_HOSTNAME,
+    port: process.env.DB_PORT,
+    dialect: 'postgres'
 });
 
 const User = userModel(sequelize, Sequelize);
