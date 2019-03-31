@@ -1,6 +1,6 @@
 const express = require('express');
 const router = new express.Router();
-const {User} = require('../db/sequelize.js');
+const {models} = require('../models');
 const auth = require('../middleware/auth.js');
 const socketio = require('socket.io');
 const io = socketio();
@@ -9,7 +9,7 @@ router.post('/login', async (req, res) => {
     try {
         const email = req.body.email;
         const pass = req.body.password;
-        const user = await User.findByCredentials(email, pass);
+        const user = await models.User.findByCredentials(email, pass);
         const token = await user.generateAuthToken();
 
         res.header('x-auth', token).send({ user });
@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/users', async (req, res) => {
     try {
-        const user = await User.create(req.body);
+        const user = await models.User.create(req.body);
 
         if (!user) {
             res.status(500).send();
@@ -35,7 +35,7 @@ router.post('/users', async (req, res) => {
 router.put('/users/:id', auth, async (req, res) => {
     try {
         const requestId = req.params.id;
-        const user = await User.findById(requestId);
+        const user = await models.User.findById(requestId);
 
         if (!user) {
             return res.status(404).send({ error: 'User not found!' });
@@ -60,7 +60,7 @@ router.put('/users/:id', auth, async (req, res) => {
 router.get('/users/:id', auth, async (req, res) => {
     try {
         const requestId = req.params.id;
-        const user = await User.findById(requestId);
+        const user = await models.User.findById(requestId);
         
         if (!user) {
             return res.status(404).send({ error: 'User not found!' });
