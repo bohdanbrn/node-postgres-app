@@ -22,10 +22,6 @@ router.post('/users', async (req, res) => {
     try {
         const user = await models.User.create(req.body);
 
-        if (!user) {
-            res.status(500).send();
-        }
-
         res.status(201).send({ user });
     } catch(e) {
         res.status(400).send(e);
@@ -53,7 +49,7 @@ router.put('/users/:id', auth, async (req, res) => {
 
         res.send(user);
     } catch (e) {
-        res.status(404).send(e);
+        res.status(400).send(e);
     }
 });
 
@@ -68,7 +64,7 @@ router.get('/users/:id', auth, async (req, res) => {
 
         res.send({ user });
     } catch (e) {
-        res.status(404).send(e);
+        res.status(400).send(e);
     }
 });
 

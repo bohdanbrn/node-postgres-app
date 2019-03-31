@@ -2,10 +2,14 @@
   "name": "node-postgres-app",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config src/app.js",
-    "start-watch": "nodemon -r dotenv/config src/app.js"
+    "start": "env-cmd ./config/.env node src/index.js",
+    "dev": "env-cmd ./config/dev.env nodemon src/index.js",
+    "test": "env-cmd ./config/test.env jest --watch --runInBand"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
@@ -27,6 +31,9 @@
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
-    "dotenv": "^7.0.0"
+    "env-cmd": "^8.0.2",
+    "jest": "^24.5.0",
+    "nodemon": "^1.18.10",
+    "supertest": "^4.0.2"
   }
 }

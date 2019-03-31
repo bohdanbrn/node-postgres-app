@@ -4,13 +4,24 @@ A simple Node.js application with Express.js and Sequelize (PostgreSQL).
 
 ## Getting Started
 
-You need to create a ".env"(based on .env.example) file in the root project folder and configure it in accordance with your environment. Once this is done, database settings are ready!
+To get started, you need to create a files:
+* config/.env (based on config/.env.example)
+* config/dev.env (based on config/dev.env.example)
+* config/test.env (based on config/test.env.example)
+
+Configure them in accordance with your environment. Once this is done, database settings are ready!
 
 **Running app**
 
 ```
 npm install
 npm start
+```
+
+**Running tests**
+
+```
+npm run test
 ```
 
 ## How it works

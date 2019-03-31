@@ -1,12 +1,10 @@
-const fs = require('fs');
 const jwt = require('jsonwebtoken')
-const {models} = require('../models');
+const { models } = require('../models');
 
 const auth = async (req, res, next) => {
     try {
-        const privateKey = process.env.JWT_SECRET;
         const token = req.header('x-auth');
-        const decoded = jwt.verify(token, privateKey);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await models.User.findOne({
             where: {
                 id: decoded.id,
